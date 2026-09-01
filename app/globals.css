@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --accent-oklab: oklab(0.5 0.118727 0.0741887 / 0.8);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-bold uppercase tracking-wide text-ink;
+  }
+
+  ::selection {
+    @apply bg-ink text-paper;
+  }
+
+  :focus-visible {
+    outline: 2px solid theme("colors.ink");
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /*
+   * Empty image container -- keeps exact aspect ratio / radius / spacing
+   * so a real photo can be dropped in later without touching layout.
+   */
+  .img-placeholder {
+    @apply relative flex items-center justify-center overflow-hidden rounded-card bg-ink/[0.04];
+
+    background-image: repeating-linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.05),
+      rgba(0, 0, 0, 0.05) 1px,
+      transparent 1px,
+      transparent 12px
+    );
+  }
+
+  .img-placeholder::after {
+    content: attr(data-label);
+    @apply text-xs uppercase tracking-wide text-ink/40 font-sans px-3 text-center;
+  }
+
+  /*
+   * ALL EYEBROW HEADINGS
+   */
+  .eyebrow {
+    @apply mb-5 block text-sm font-medium uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent-oklab);
+  }
+
+  /*
+   * PRIMARY BUTTON
+   */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper transition-all duration-200 ease-smooth;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--accent-oklab);
+    color: #fff;
+  }
+
+  /*
+   * SECONDARY BUTTON
+   */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 bg-transparent px-6 py-3 text-sm font-medium text-ink transition-all duration-200 ease-smooth;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent-oklab);
+    background-color: var(--accent-oklab);
+    color: #fff;
+  }
+
+  /*
+   * RETURN TO ALL SERVICES BUTTON
+   */
+  .return-services {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 10px 18px;
+
+    border: 1px solid var(--accent-oklab);
+    border-radius: 999px;
+
+    color: var(--accent-oklab);
+    background: transparent;
+
+    text-decoration: none;
+
+    transition:
+      color 0.25s ease,
+      background-color 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .return-services:hover {
+    background-color: var(--accent-oklab);
+    border-color: var(--accent-oklab);
+    color: #fff;
+  }
+
+  /*
+   * SERVICE DETAIL PAGE
+   *
+   * Navbar is fixed, so content starts underneath it.
+   */
+  .service-detail-page {
+    padding-top: 80px;
+  }
+}
+
+/* Continuous horizontal stats ticker */
+.marquee {
+  overflow: hidden;
+
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+}
+
+.marquee__inner {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 24s linear infinite;
+}
+
+.marquee__item {
+  display: flex;
+  flex-shrink: 0;
+  align-items: baseline;
+  gap: 0.75rem;
+  white-space: nowrap;
+  padding: 0 1.75rem;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__inner {
+    animation: none;
+    overflow-x: auto;
+  }
+}
+
+/* Single orchestrated on-scroll reveal, used sparingly per section */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s ease-smooth,
+      transform 0.6s ease-smooth;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
