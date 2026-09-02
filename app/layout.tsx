@@ -16,16 +16,25 @@ const inter = Inter({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.bayareahardwoodandslabs.com";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  "https://www.bayareahardwoodandslabs.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+
   title: {
     default: "Bay Area Hardwood & Slabs | Custom Tables, Milling & Lumber",
     template: "%s | Bay Area Hardwood & Slabs",
   },
+
   description:
     "San Leandro hardwood shop building live-edge tables and milling decking, siding, flooring and trim. Hardwood lumber and slabs for sale. Call 510-813-4952.",
+
+  icons: {
+    icon: "/favicon.svg",
+  },
+
   openGraph: {
     title: "Bay Area Hardwood & Slabs",
     description:
@@ -34,6 +43,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Bay Area Hardwood & Slabs",
   },
+
   twitter: {
     card: "summary_large_image",
     title: "Bay Area Hardwood & Slabs",
@@ -48,7 +58,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${oswald.variable} ${inter.variable}`}>
+    <html
+      lang="en"
+      className={`${oswald.variable} ${inter.variable}`}
+    >
       <body>{children}</body>
     </html>
   );
