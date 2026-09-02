@@ -9,7 +9,6 @@ const initialForm = {
   email: "",
   phone: "",
   message: "",
-  // honeypot field — real users never fill this in
   company: "",
 };
 
@@ -23,68 +22,135 @@ export default function ContactForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Clear field error while typing
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   }
 
   function validate(): Record<string, string> {
     const errors: Record<string, string> = {};
-    if (!form.name.trim()) errors.name = "Enter your name.";
+
+    if (!form.name.trim()) {
+      errors.name = "Enter your name.";
+    }
+
     if (!form.email.trim()) {
       errors.email = "Enter your email.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    } else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
+    ) {
       errors.email = "Enter a valid email.";
     }
-    if (!form.message.trim()) errors.message = "Tell us a bit about the project.";
+
+    if (!form.message.trim()) {
+      errors.message = "Tell us a bit about the project.";
+    }
+
     return errors;
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     setErrorMessage("");
 
     const errors = validate();
     setFieldErrors(errors);
-    if (Object.keys(errors).length > 0) return;
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
 
     setStatus("submitting");
+
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const response = await fetch(
+        "https://api.web3forms.com/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            access_key: "9d561063-94e8-423d-bd29-55adbf2ad2ae",
 
-      const data = await res.json();
+            subject:
+              "New Contact Form Submission - Bay Area Hardwood",
 
-      if (!res.ok) {
+            from_name: form.name,
+
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            message: form.message,
+
+            // Honeypot field
+            company: form.company,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
         setStatus("error");
-        setErrorMessage(data.message ?? "Something went wrong. Please call the shop instead.");
+
+        setErrorMessage(
+          data.message ||
+            "Something went wrong. Please call the shop instead."
+        );
+
         return;
       }
 
       setStatus("success");
       setForm(initialForm);
-    } catch {
+      setFieldErrors({});
+    } catch (error) {
+      console.error("Contact form error:", error);
+
       setStatus("error");
-      setErrorMessage("Something went wrong. Please call the shop instead.");
+
+      setErrorMessage(
+        "Something went wrong. Please call the shop instead."
+      );
     }
   }
 
   if (status === "success") {
     return (
       <div className="rounded-card border border-ink/15 bg-paper p-6">
-        <h3 className="text-lg text-ink">Thanks — got it.</h3>
+        <h3 className="text-lg text-ink">
+          Thanks — got it.
+        </h3>
+
         <p className="mt-2 text-[15px] text-ink/65">
-          We&apos;ll get back to you shortly. If it&apos;s urgent, call the
-          shop at{" "}
-          <a href="tel:510-813-4952" className="text-ink underline">
+          We&apos;ll get back to you shortly. If it&apos;s urgent,
+          call the shop at{" "}
+          <a
+            href="tel:510-813-4952"
+            className="text-ink underline"
+          >
             510-813-4952
           </a>
           .
         </p>
+
         <button
           type="button"
-          onClick={() => setStatus("idle")}
+          onClick={() => {
+            setStatus("idle");
+            setErrorMessage("");
+          }}
           className="btn-secondary mt-5"
         >
           Send another message
@@ -94,10 +160,20 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-5">
-      {/* Honeypot field, hidden from real visitors */}
-      <div className="hidden" aria-hidden="true">
-        <label htmlFor="company">Company</label>
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className="space-y-5"
+    >
+      {/* Honeypot field */}
+      <div
+        className="hidden"
+        aria-hidden="true"
+      >
+        <label htmlFor="company">
+          Company
+        </label>
+
         <input
           type="text"
           id="company"
@@ -109,11 +185,17 @@ export default function ContactForm() {
         />
       </div>
 
+      {/* Name + Phone */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        {/* Name */}
         <div>
-          <label htmlFor="name" className="text-sm font-medium text-ink">
+          <label
+            htmlFor="name"
+            className="text-sm font-medium text-ink"
+          >
             Name
           </label>
+
           <input
             type="text"
             id="name"
@@ -123,15 +205,23 @@ export default function ContactForm() {
             className="mt-2 w-full rounded-md border border-line bg-paper px-4 py-3 text-[15px] text-ink placeholder:text-ink/40 focus:border-ink"
             placeholder="Your name"
           />
+
           {fieldErrors.name && (
-            <p className="mt-1.5 text-sm text-red-700">{fieldErrors.name}</p>
+            <p className="mt-1.5 text-sm text-red-700">
+              {fieldErrors.name}
+            </p>
           )}
         </div>
 
+        {/* Phone */}
         <div>
-          <label htmlFor="phone" className="text-sm font-medium text-ink">
-            Phone <span className="text-ink/40"></span>
+          <label
+            htmlFor="phone"
+            className="text-sm font-medium text-ink"
+          >
+            Phone
           </label>
+
           <input
             type="tel"
             id="phone"
@@ -144,10 +234,15 @@ export default function ContactForm() {
         </div>
       </div>
 
+      {/* Email */}
       <div>
-        <label htmlFor="email" className="text-sm font-medium text-ink">
+        <label
+          htmlFor="email"
+          className="text-sm font-medium text-ink"
+        >
           Email
         </label>
+
         <input
           type="email"
           id="email"
@@ -157,15 +252,23 @@ export default function ContactForm() {
           className="mt-2 w-full rounded-md border border-line bg-paper px-4 py-3 text-[15px] text-ink placeholder:text-ink/40 focus:border-ink"
           placeholder="you@email.com"
         />
+
         {fieldErrors.email && (
-          <p className="mt-1.5 text-sm text-red-700">{fieldErrors.email}</p>
+          <p className="mt-1.5 text-sm text-red-700">
+            {fieldErrors.email}
+          </p>
         )}
       </div>
 
+      {/* Message */}
       <div>
-        <label htmlFor="message" className="text-sm font-medium text-ink">
+        <label
+          htmlFor="message"
+          className="text-sm font-medium text-ink"
+        >
           Tell us about the project
         </label>
+
         <textarea
           id="message"
           name="message"
@@ -175,21 +278,30 @@ export default function ContactForm() {
           className="mt-2 w-full rounded-md border border-line bg-paper px-4 py-3 text-[15px] text-ink placeholder:text-ink/40 focus:border-ink"
           placeholder="Species, dimensions, timeline — whatever you've got."
         />
+
         {fieldErrors.message && (
-          <p className="mt-1.5 text-sm text-red-700">{fieldErrors.message}</p>
+          <p className="mt-1.5 text-sm text-red-700">
+            {fieldErrors.message}
+          </p>
         )}
       </div>
 
+      {/* Error */}
       {status === "error" && (
-        <p className="text-sm text-red-700">{errorMessage}</p>
+        <p className="text-sm text-red-700">
+          {errorMessage}
+        </p>
       )}
 
+      {/* Submit */}
       <button
         type="submit"
         disabled={status === "submitting"}
         className="btn-primary w-full sm:w-auto disabled:opacity-60"
       >
-        {status === "submitting" ? "Sending…" : "Send message"}
+        {status === "submitting"
+          ? "Sending…"
+          : "Send message"}
       </button>
     </form>
   );
