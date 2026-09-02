@@ -39,8 +39,8 @@ const FEATURED_IMAGES: FeaturedImage[] = [
 
 export default function FeaturedWork() {
   return (
-<section className="border-b border-line bg-cream py-14 md:py-20">
-        <div className="container">
+    <section className="border-b border-line bg-cream py-14 md:py-20">
+      <div className="container">
         <Reveal className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <span
@@ -76,8 +76,10 @@ export default function FeaturedWork() {
           {FEATURED_IMAGES.map((image, index) => (
             <div
               key={image.label}
-              className={`min-w-0 ${
-                index === 0 ? "sm:row-span-2" : ""
+              className={`min-w-0 overflow-hidden ${
+                index === 0
+                  ? "h-[280px] sm:h-auto sm:row-span-2"
+                  : "h-[220px] sm:h-auto"
               }`}
             >
               <ImagePlaceholder
@@ -85,7 +87,7 @@ export default function FeaturedWork() {
                 alt={image.alt}
                 label={image.label}
                 objectPosition={image.objectPosition}
-                className="h-full w-full"
+                className="h-full w-full rounded-none object-cover"
               />
             </div>
           ))}

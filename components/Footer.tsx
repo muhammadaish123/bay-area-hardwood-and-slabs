@@ -20,12 +20,6 @@ const COMPANY_LINKS = [
   { label: "Request a Quote", href: `tel:${PHONE}` },
 ];
 
-const SOCIALS = [
-  { label: "Instagram", initial: "I", href: "https://instagram.com" },
-  { label: "Facebook", initial: "F", href: "https://facebook.com" },
-  { label: "Houzz", initial: "H", href: "https://houzz.com" },
-];
-
 const ACCENT = "oklab(0.5 0.118727 0.0741887 / 0.8)";
 
 export default function Footer() {
@@ -154,31 +148,6 @@ export default function Footer() {
                 <dd>Mon – Sat, 8am – 5pm</dd>
               </div>
             </dl>
-
-            {/* SOCIALS */}
-            <div className="mt-5 flex gap-3">
-              {SOCIALS.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={social.label}
-                  className="
-                    flex h-9 w-9 items-center justify-center
-                    rounded-full
-                    border border-ink/20
-                    text-sm text-ink/70
-                    transition-all duration-200
-                    hover:border-[oklab(0.5_0.118727_0.0741887_/_0.8)]
-                    hover:bg-[oklab(0.5_0.118727_0.0741887_/_0.8)]
-                    hover:text-black
-                  "
-                >
-                  {social.initial}
-                </a>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -187,7 +156,7 @@ export default function Footer() {
       <div className="border-t border-ink/20">
         <div className="container flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
 
-          {/* COPYRIGHT — ALWAYS OKLAB */}
+          {/* COPYRIGHT */}
           <p
             className="text-sm"
             style={{ color: ACCENT }}
@@ -196,10 +165,10 @@ export default function Footer() {
             rights reserved.
           </p>
 
-          {/* BOTTOM LINKS — ALWAYS OKLAB */}
+          {/* BOTTOM LINKS */}
           <div className="flex gap-6 text-sm">
-            <a
-              href="#"
+            <Link
+              href="/privacy-policy"
               className="
                 transition-colors duration-200
                 text-[oklab(0.5_0.118727_0.0741887_/_0.8)]
@@ -207,10 +176,10 @@ export default function Footer() {
               "
             >
               Privacy Policy
-            </a>
+            </Link>
 
-            <a
-              href="#"
+            <Link
+              href="/terms-of-service"
               className="
                 transition-colors duration-200
                 text-[oklab(0.5_0.118727_0.0741887_/_0.8)]
@@ -218,18 +187,7 @@ export default function Footer() {
               "
             >
               Terms of Service
-            </a>
-
-            <a
-              href="#"
-              className="
-                transition-colors duration-200
-                text-[oklab(0.5_0.118727_0.0741887_/_0.8)]
-                hover:text-black
-              "
-            >
-              Sitemap
-            </a>
+            </Link>
           </div>
 
         </div>

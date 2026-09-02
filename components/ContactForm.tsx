@@ -130,7 +130,7 @@ export default function ContactForm() {
 
         <div>
           <label htmlFor="phone" className="text-sm font-medium text-ink">
-            Phone <span className="text-ink/40">(optional)</span>
+            Phone <span className="text-ink/40"></span>
           </label>
           <input
             type="tel"
