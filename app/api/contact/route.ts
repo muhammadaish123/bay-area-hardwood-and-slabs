@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
@@ -6,6 +9,7 @@ export async function POST(request: Request) {
 
     const { name, email, phone, message, company } = body;
 
+    // Required fields
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
       return NextResponse.json(
         {
@@ -16,10 +20,17 @@ export async function POST(request: Request) {
       );
     }
 
-    const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+    // Honeypot — bots ke liye
+    if (company?.trim()) {
+      return NextResponse.json({
+        success: true,
+        message: "Message sent successfully.",
+      });
+    }
 
-    if (!accessKey) {
-      console.error("WEB3FORMS_ACCESS_KEY is not configured.");
+    // Check Resend API key
+    if (!process.env.RESEND_API_KEY) {
+      console.error("RESEND_API_KEY is missing");
 
       return NextResponse.json(
         {
@@ -30,39 +41,43 @@ export async function POST(request: Request) {
       );
     }
 
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        access_key: accessKey,
-        subject: "New Contact Form Submission - Bay Area Hardwood",
-        from_name: name,
-        name,
-        email,
-        phone,
-        message,
-        company,
-      }),
+    // Send email through Resend
+    const { data, error } = await resend.emails.send({
+      from: "Bay Area Hardwood <onboarding@resend.dev>",
+
+      // ABHI TESTING KE LIYE YAHAN APNI EMAIL LAGAO
+      to: ["abeerbhai102030@gmail.com"],
+
+      subject: "New Contact Form Submission - Bay Area Hardwood",
+
+      // Customer ke email par Reply karne ke liye
+      replyTo: email,
+
+      text: `
+New Contact Form Submission
+
+Name: ${name}
+Email: ${email}
+Phone: ${phone || "Not provided"}
+
+Message:
+${message}
+      `,
     });
 
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      console.error("Web3Forms error:", data);
+    if (error) {
+      console.error("Resend error:", error);
 
       return NextResponse.json(
         {
           success: false,
-          message:
-            data.message ||
-            "Something went wrong while sending the message.",
+          message: "Something went wrong while sending the message.",
         },
         { status: 500 }
       );
     }
+
+    console.log("Email sent successfully:", data?.id);
 
     return NextResponse.json({
       success: true,
