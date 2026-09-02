@@ -57,74 +57,58 @@ export default function ContactForm() {
     return errors;
   }
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+ async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  e.preventDefault();
 
-    setErrorMessage("");
+  setErrorMessage("");
 
-    const errors = validate();
-    setFieldErrors(errors);
+  const errors = validate();
+  setFieldErrors(errors);
 
-    if (Object.keys(errors).length > 0) {
+  if (Object.keys(errors).length > 0) {
+    return;
+  }
+
+  setStatus("submitting");
+
+  try {
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        message: form.message,
+        company: form.company,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      setStatus("error");
+      setErrorMessage(
+        data.message ||
+          "Something went wrong. Please call the shop instead."
+      );
       return;
     }
 
-    setStatus("submitting");
+    setStatus("success");
+    setForm(initialForm);
+    setFieldErrors({});
+  } catch (error) {
+    console.error("Contact form error:", error);
 
-    try {
-      const response = await fetch(
-        "https://api.web3forms.com/submit",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            access_key: "9d561063-94e8-423d-bd29-55adbf2ad2ae",
-
-            subject:
-              "New Contact Form Submission - Bay Area Hardwood",
-
-            from_name: form.name,
-
-            name: form.name,
-            email: form.email,
-            phone: form.phone,
-            message: form.message,
-
-            // Honeypot field
-            company: form.company,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        setStatus("error");
-
-        setErrorMessage(
-          data.message ||
-            "Something went wrong. Please call the shop instead."
-        );
-
-        return;
-      }
-
-      setStatus("success");
-      setForm(initialForm);
-      setFieldErrors({});
-    } catch (error) {
-      console.error("Contact form error:", error);
-
-      setStatus("error");
-
-      setErrorMessage(
-        "Something went wrong. Please call the shop instead."
-      );
-    }
+    setStatus("error");
+    setErrorMessage(
+      "Something went wrong. Please call the shop instead."
+    );
   }
+}
 
   if (status === "success") {
     return (
