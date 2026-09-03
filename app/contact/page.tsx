@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Visit Bay Area Hardwood & Slabs at 653 143rd Ave, San Leandro, CA. Mon–Sat, 8am–5pm. Call 510-813-4952 or send an inquiry.",
+    "Visit Bebewoodwork&sawmills at 653 143rd Ave, San Leandro, CA. Mon–Sat, 8am–5pm. Call 510-813-4952 or send an inquiry.",
 };
 
 export default function ContactPage() {

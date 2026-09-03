@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "The terms that govern use of the Bay Area Hardwood & Slabs website and the services we provide.",
+    "The terms that govern use of the BebeWoodWork & SawMills website and the services we provide.",
 };
 
 export default function TermsOfServicePage() {
@@ -74,8 +74,8 @@ export default function TermsOfServicePage() {
             <section>
               <h2 className="text-xl">6. Limitation of Liability</h2>
               <p className="mt-3">
-                To the fullest extent permitted by law, Bay Area Hardwood
-                &amp; Slabs is not liable for any indirect or consequential
+                To the fullest extent permitted by law, BebeWoodWork
+                &amp; SawMills is not liable for any indirect or consequential
                 damages arising from your use of this website.
               </p>
             </section>

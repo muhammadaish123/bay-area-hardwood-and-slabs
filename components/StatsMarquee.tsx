@@ -3,7 +3,7 @@ import { Fragment } from "react";
 const STATS = [
   { value: "25+", label: "Years milling" },
   { value: "1,000s", label: "Board feet in stock" },
-  { value: "Bay Area", label: "Delivery & install" },
+  { value: "Bebewoodwork", label: "Delivery & install" },
   { value: "Custom", label: "Every profile" },
 ];
 

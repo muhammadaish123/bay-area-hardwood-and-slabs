@@ -61,14 +61,14 @@ export default function Navbar({ overlay = true }: NavbarProps) {
               : "font-semibold text-ink"
           }`}
         >
-          Bay Area
+          Bebewoodwork
 
           <span
             className={`block text-sm font-sans normal-case font-medium tracking-wide transition-colors duration-300 ${
               transparent ? "text-paper/85" : "text-muted"
             }`}
           >
-            Hardwood &amp; Slabs
+         &amp; sawmills
           </span>
         </Link>
 

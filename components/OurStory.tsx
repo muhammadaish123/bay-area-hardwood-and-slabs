@@ -17,7 +17,7 @@ export default function OurStory() {
                     </h2>
 
                     <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-muted font-sans normal-case md:text-lg">
-                        Bay Area Hardwood &amp; Slabs started as a small San Leandro lumberyard
+                        Bebewoodwork&amp;sawmills started as a small San Leandro lumberyard
                         and grew into a full milling shop because customers kept asking for
                         more than just boards. Today we source, mill, build and finish
                         everything ourselves — from a single live-edge dining table to a

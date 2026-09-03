@@ -22,7 +22,7 @@ const FAQS = [
   {
     question: "Do you deliver?",
     answer:
-      "We deliver throughout the Bay Area and can install decking, siding and flooring.",
+      "We deliver throughout the BebeWoodWork and can install decking, siding and flooring.",
   },
 ];
 

@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How Bay Area Hardwood & Slabs collects, uses, and protects information submitted through our website.",
+    "How BebeWoodWork & SawMills collects, uses, and protects information submitted through our website.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-xl">1. Introduction</h2>
               <p className="mt-3">
-                Bay Area Hardwood &amp; Slabs (&quot;we,&quot; &quot;us,&quot;
+                BebeWoodWork &amp; SawMills (&quot;we,&quot; &quot;us,&quot;
                 or &quot;our&quot;) respects your privacy. This policy
                 explains what information we collect through this website,
                 how we use it, and the choices you have.

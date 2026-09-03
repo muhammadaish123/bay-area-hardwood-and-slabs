@@ -31,10 +31,10 @@ export default function Footer() {
           {/* BRAND */}
           <div>
             <div className="font-display uppercase tracking-wide text-lg text-ink">
-              Bay Area
+              Bebewoodwork
 
               <span className="block text-sm font-sans normal-case font-medium tracking-wide text-ink/60">
-                Hardwood &amp; Slabs
+                &amp; sawmills
               </span>
             </div>
 
@@ -161,7 +161,7 @@ export default function Footer() {
             className="text-sm"
             style={{ color: ACCENT }}
           >
-            © {new Date().getFullYear()} Bay Area Hardwood &amp; Slabs. All
+            © {new Date().getFullYear()} Bebewoodwork&amp;sawmills. All
             rights reserved.
           </p>
 
